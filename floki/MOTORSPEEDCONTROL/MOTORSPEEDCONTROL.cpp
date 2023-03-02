@@ -78,11 +78,7 @@ void MOTORSPEEDCONTROL::iterate()
 					}
 					else
 					{
-						K[i] = K[i]+MOTORSPEEDCONTROL_K_DELTA;
-						if( K[i] >= MOTORSPEEDCONTROL_K_NOM)
-						{
-							K[i] = MOTORSPEEDCONTROL_K_NOM;
-						}
+						K[i] = MOTORSPEEDCONTROL_K_NOM*ENCODER::motorSpeed[i]/reference;
 					}
 				}
 
