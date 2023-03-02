@@ -21,6 +21,7 @@ void THRUSTCONTROL::iterate()
 {
 	getThrustEstimates();
 	static float state[12];
+	static float state_x[20];
 	for(int i=0;i<4;i++)
 	{
 		thrustReference[i] = (250.0/17)*(HEAVECONTROL::u-3)+50;
@@ -28,7 +29,7 @@ void THRUSTCONTROL::iterate()
 		if( fabsf(MOTORSPEEDCONTROL::reference-ENCODER::motorSpeed[i]) < THRUSTCONTROL_SPEED_THRESHOLD )
 		{
 			servoCommand[i] = PID(e,THRUSTCONTROL_K,THRUSTCONTROL_W_ZERO1,THRUSTCONTROL_W_ZERO2,THRUSTCONTROL_W_POLE,dT, &state[3*i]);
-			servoCommand[i] = servoCommand[i]+THRUSTCONTROL_X*thrustReference[i];
+			servoCommand[i] = servoCommand[i]+LPF_UD(thrustReference[i],dT,THRUSTCONTROL_X_WN,THRUSTCONTROL_X_Z,THRUSTCONTROL_X_A, &state_x[5*i]);
 		}
 		else
 		{
