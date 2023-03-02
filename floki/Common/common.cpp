@@ -57,6 +57,37 @@ float LPF2(const float data, const float dt, float w, float ux[2], float yx[2])
 	return y[0];
 }
 
+float LPF_UD(const float data, const float dt, const float wn, const float z, const float a, float state[5])
+{
+	float a0 = 4*dt*wn;
+	float a1 = dt*dt*wn*wn+4;
+	float a2 = 2*dt*dt*wn*wn-4*dt*wn-8;
+	float a3 = dt*dt*wn*wn+4;
+	
+	float b1 = a*dt*dt*wn*wn;
+	float b2 = 2*b1;
+	float b3 = b1;
+	
+	static float y[4];
+	static float u[3];
+	
+	u[0] = data;
+	u[1] = state[0];
+	u[2] = state[1];
+	y[1] = state[2];
+	y[2] = state[3];
+	y[3] = state[4];
+	
+	y[0] = 1/a0*( b1*u[0]+b2*u[1]+b3*u[2]-a1*y[1]-a2*y[2]-a3*y[3] );
+	state[0] = u[0];
+	state[1] = u[1];
+	state[2] = y[0];
+	state[3] = y[1];
+	state[4] = y[2];
+	
+	return y[0];
+}
+
 float HPF(const float data, const float dt, const float w, float state[2])
 {
 	static float y[] = {0,0};
