@@ -22,6 +22,7 @@
 
 float LPF(const float data, const float dt, const float w, float state[2]);
 float LPF2(const float data, const float dt, float w, float ux[2], float yx[2]);
+float LPF_UD(const float data, const float dt, const float wn, const float z, const float a, float state[6]);
 float HPF(const float data, const float dt, const float w, float state[2]);
 float HPF2(const float data, const float dt, float w, float ux[3], float yx[3]);
 float digitalNotchFilter(const float data, const float dt, const float w, const float Q, float ux[2], float yx[2]);
